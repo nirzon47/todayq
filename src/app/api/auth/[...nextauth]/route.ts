@@ -65,6 +65,7 @@ export const authOptions = {
 				return {
 					id: userFromDB._id,
 					email: userFromDB.email,
+					name: userFromDB.name,
 				}
 			},
 		}),

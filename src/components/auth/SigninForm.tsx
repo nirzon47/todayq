@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { SigninFormType } from '@/lib/zod'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 const SigninForm = () => {
 	// Form state
@@ -17,6 +18,8 @@ const SigninForm = () => {
 	})
 
 	const { toast } = useToast()
+	const router = useRouter()
+	const { status } = useSession()
 
 	// Form handler
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,6 +50,13 @@ const SigninForm = () => {
 	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setForm({ ...form, password: e.target.value })
 	}
+
+	useEffect(() => {
+		// Redirects user to home page if authenticated
+		if (status === 'authenticated') {
+			router.push('/')
+		}
+	}, [status, router])
 
 	return (
 		<form className='grid gap-4' onSubmit={handleSubmit}>

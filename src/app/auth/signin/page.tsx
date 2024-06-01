@@ -9,6 +9,11 @@ import {
 import AuthProviderButtons from '@/components/auth/AuthProviderButtons'
 import SigninForm from '@/components/auth/SigninForm'
 
+export const metadata = {
+	title: 'Sign In | Content Offerings',
+	description: 'Sign in to Content Offerings',
+}
+
 const SignIn = () => {
 	return (
 		<Card className='mx-auto max-w-sm'>
