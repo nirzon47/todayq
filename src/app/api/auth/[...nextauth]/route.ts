@@ -3,10 +3,10 @@ import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import connectDB from '@/lib/db'
-import { model } from 'mongoose'
 import { compareSync } from 'bcryptjs'
 import { z } from 'zod'
 import { NextAuthOptions } from 'next-auth'
+import { userModel } from '@/models/user.model'
 
 const authOptions: NextAuthOptions = {
 	providers: [
@@ -40,9 +40,10 @@ const authOptions: NextAuthOptions = {
 
 				// Database connection
 				await connectDB()
+				console.log('DB connected')
 
 				// Check if user exists in DB
-				const userFromDB = await model('user').findOne({
+				const userFromDB = await userModel.findOne({
 					email: credentials?.email,
 				})
 
