@@ -6,8 +6,9 @@ import connectDB from '@/lib/db'
 import { model } from 'mongoose'
 import { compareSync } from 'bcryptjs'
 import { z } from 'zod'
+import { NextAuthOptions } from 'next-auth'
 
-export const authOptions = {
+const authOptions: NextAuthOptions = {
 	providers: [
 		GitHubProvider({
 			clientId: process.env.GITHUB_ID!,
@@ -75,6 +76,6 @@ export const authOptions = {
 	},
 }
 
-export const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
