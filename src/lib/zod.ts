@@ -25,3 +25,15 @@ export const SignupFormType = z
 			})
 		}
 	})
+
+export const OfferingFormType = z.object({
+	category: z.enum(['content-distribution', 'advertisement', '']),
+	name: z.string(),
+	url: z.string(),
+	desc: z.string(),
+	email: z.string().email(),
+	telegram: z.string(),
+	gambling: z.boolean(),
+	adult: z.boolean(),
+	web3: z.boolean(),
+})
