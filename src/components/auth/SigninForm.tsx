@@ -35,11 +35,17 @@ const SigninForm = () => {
 			return
 		}
 
-		signIn('credentials', {
-			email: form.email,
-			password: form.password,
-			redirect: false,
-		})
+		signIn(
+			'credentials',
+			{
+				email: form.email,
+				password: form.password,
+				redirect: true,
+			},
+			{
+				callbackUrl: '/dashboard',
+			},
+		)
 	}
 
 	// Input handlers
@@ -54,7 +60,7 @@ const SigninForm = () => {
 	useEffect(() => {
 		// Redirects user to home page if authenticated
 		if (status === 'authenticated') {
-			router.push('/')
+			router.push('/dashboard')
 		}
 	}, [status, router])
 

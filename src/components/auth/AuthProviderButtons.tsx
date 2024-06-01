@@ -12,7 +12,7 @@ const AuthProviderButtons = () => {
 				size={'lg'}
 				className='w-full'
 				aria-label='Google Sign in'
-				onClick={() => signIn('google')}
+				onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
 			>
 				<FaGoogle className='text-lg' />
 			</Button>
@@ -21,7 +21,7 @@ const AuthProviderButtons = () => {
 				size={'lg'}
 				className='w-full'
 				aria-label='Github Sign in'
-				onClick={() => signIn('github')}
+				onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
 			>
 				<FaGithub className='text-lg' />
 			</Button>
