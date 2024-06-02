@@ -38,8 +38,16 @@ const ProfileSection = () => {
 					<DropdownMenuContent>
 						<DropdownMenuLabel>My Account</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>Profile</DropdownMenuItem>
-						<DropdownMenuItem>Cart</DropdownMenuItem>
+						<Link href={'/dashboard/orders'}>
+							<DropdownMenuItem className='cursor-pointer'>
+								Order History
+							</DropdownMenuItem>
+						</Link>
+						<Link href={'/dashboard/cart'}>
+							<DropdownMenuItem className='cursor-pointer'>
+								Cart
+							</DropdownMenuItem>
+						</Link>
 						<Link href={'/dashboard/wip'}>
 							<DropdownMenuItem className='cursor-pointer'>
 								Team

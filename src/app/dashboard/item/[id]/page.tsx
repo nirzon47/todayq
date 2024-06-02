@@ -146,10 +146,22 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 									)}
 								</span>
 							</p>
-							<Button className='flex items-center gap-2'>
-								<LuShoppingCart />
-								<span>Add to cart</span>
-							</Button>
+							{status === 'authenticated' ? (
+								<Button
+									className='flex items-center gap-2'
+									onClick={handleAddToCart}
+								>
+									<LuShoppingCart />
+									<span>Add to cart</span>
+								</Button>
+							) : (
+								<Button
+									onClick={() => router.push('/auth/signin')}
+									variant='outline'
+								>
+									Sign in to add to cart
+								</Button>
+							)}
 						</div>
 					</Card>
 				</div>

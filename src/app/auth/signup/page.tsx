@@ -33,6 +33,12 @@ const Signup = () => {
 						Sign in
 					</Link>
 				</div>
+				<Link
+					href='/'
+					className='mt-4 block text-center text-sm duration-150 hover:text-primary hover:underline'
+				>
+					Back to Home
+				</Link>
 			</CardContent>
 		</Card>
 	)

@@ -36,7 +36,7 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		getData()
-	}, [])
+	}, [getData])
 
 	return (
 		<div className='grid grid-cols-1 gap-8 p-8 md:grid-cols-8'>
