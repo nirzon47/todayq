@@ -52,8 +52,6 @@ const authOptions: NextAuthOptions = {
 					return null
 				}
 
-				console.log(userFromDB)
-
 				// Check if password is correct
 				const isValidPassword = compareSync(
 					credentials?.password,
@@ -101,9 +99,6 @@ const authOptions: NextAuthOptions = {
 			return true
 		},
 		async session({ session, token }) {
-			// Add user id to session
-			console.log('session', session)
-
 			// @ts-ignore
 			session.user.id = token.id
 			return session

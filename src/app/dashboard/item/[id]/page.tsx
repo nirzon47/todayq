@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
 import { ItemType } from '@/lib/types'
 import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -16,7 +17,9 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 
 	const router = useRouter()
 	const { toast } = useToast()
+	const { data: session, status } = useSession()
 
+	// Get content data
 	const getData = useCallback(async () => {
 		try {
 			setLoading(true)
@@ -33,6 +36,28 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 			setLoading(false)
 		}
 	}, [params, toast])
+
+	// Add to cart
+	const handleAddToCart = async () => {
+		try {
+			const { data } = await axios.post(`/api/cart/${params.id}`, {
+				// @ts-ignore
+				user: session?.user?.id,
+			})
+
+			toast({
+				title: 'Success',
+				description: data.message || 'Item added to cart',
+				variant: 'default',
+			})
+		} catch (error: Error | any) {
+			toast({
+				title: 'Error',
+				description: error.response.data.message || 'Something went wrong',
+				variant: 'destructive',
+			})
+		}
+	}
 
 	useEffect(() => {
 		getData()
@@ -55,7 +80,7 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 			)}
 			{!loading && data && (
 				<div>
-					<div className='grid grid-cols-2 gap-8'>
+					<div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
 						<Card className='grid gap-4 p-6'>
 							<h1 className='text-2xl font-bold'>{data.name}</h1>
 							<p className='text-sm opacity-80'>{data.desc}</p>

@@ -14,11 +14,15 @@ const links = [
 		name: 'Add Product',
 		href: '/dashboard/add',
 	},
+	{
+		name: 'Cart',
+		href: '/dashboard/cart',
+	},
 ]
 
 const Header = () => {
 	return (
-		<header className='sticky top-0 flex h-16 items-center justify-between bg-zinc-900 p-4 text-white md:p-8'>
+		<header className='sticky top-0 z-50 flex h-16 items-center justify-between bg-zinc-900 p-4 text-white md:p-8'>
 			<div className='flex gap-6'>
 				<Sheet>
 					<SheetTrigger className='md:hidden'>
