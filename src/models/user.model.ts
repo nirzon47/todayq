@@ -9,11 +9,17 @@ const userSchema = new Schema(
 		email: {
 			type: String,
 			required: true,
-			unique: true,
 		},
 		password: {
 			type: String,
-			required: true,
+		},
+		provider: {
+			type: String,
+			enum: ['credentials', 'google', 'github'],
+			default: 'credentials',
+		},
+		providerId: {
+			type: String,
 		},
 	},
 	{ timestamps: true },

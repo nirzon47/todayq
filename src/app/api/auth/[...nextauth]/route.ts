@@ -40,17 +40,19 @@ const authOptions: NextAuthOptions = {
 
 				// Database connection
 				await connectDB()
-				console.log('DB connected')
 
 				// Check if user exists in DB
 				const userFromDB = await userModel.findOne({
 					email: credentials?.email,
+					provider: 'credentials',
 				})
 
 				// If user doesn't exist return null
 				if (!userFromDB) {
 					return null
 				}
+
+				console.log(userFromDB)
 
 				// Check if password is correct
 				const isValidPassword = compareSync(
@@ -74,6 +76,44 @@ const authOptions: NextAuthOptions = {
 	],
 	pages: {
 		signIn: '/auth/signin',
+	},
+	callbacks: {
+		async signIn({ user, account, profile }) {
+			await connectDB()
+
+			// Check if user exists in DB
+			let existingUser = await userModel.findOne({
+				email: user.email,
+				provider: account?.provider,
+			})
+
+			if (!existingUser) {
+				// Create a new user if it doesn't exist
+				existingUser = await userModel.create({
+					name: user.name || profile?.name,
+					email: user.email,
+					provider: account?.provider,
+					providerId: profile?.sub,
+					password: null,
+				})
+			}
+
+			return true
+		},
+		async session({ session, token }) {
+			// Add user id to session
+			console.log('session', session)
+
+			// @ts-ignore
+			session.user.id = token.id
+			return session
+		},
+		async jwt({ token, user }) {
+			if (user) {
+				token.id = user.id
+			}
+			return token
+		},
 	},
 }
 

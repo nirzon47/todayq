@@ -9,7 +9,7 @@ export const POST = async (req: Request) => {
 	await connectDB()
 
 	// If user already exists, return error
-	const user = await userModel.findOne({ email })
+	const user = await userModel.findOne({ email, provider: 'credentials' })
 	if (user) {
 		return Response.json(
 			{ success: false, message: 'User already exists' },
