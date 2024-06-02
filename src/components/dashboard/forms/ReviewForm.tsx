@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { ContentOfferingFormType, OfferingFormType } from '@/lib/zod'
 import { Button } from '@/components/ui/button'
+import axios from 'axios'
+import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 const ReviewForm = ({
 	offeringForm,
@@ -11,6 +14,32 @@ const ReviewForm = ({
 	contentOfferingForm: z.infer<typeof ContentOfferingFormType>
 	setFormProgress: React.Dispatch<React.SetStateAction<0 | 1 | 2 | 3>>
 }) => {
+	const { toast } = useToast()
+	const router = useRouter()
+
+	const handleCreate = async () => {
+		try {
+			const { data } = await axios.post('/api/content', {
+				...offeringForm,
+				contentOffering: contentOfferingForm,
+			})
+
+			toast({
+				title: 'Success',
+				description: data.message,
+				variant: 'default',
+			})
+
+			router.push('/dashboard')
+		} catch (error: Error | any) {
+			toast({
+				title: 'Error',
+				description: error.message || 'Something went wrong',
+				variant: 'destructive',
+			})
+		}
+	}
+
 	return (
 		<div className='grid gap-4'>
 			<div>
@@ -96,7 +125,9 @@ const ReviewForm = ({
 
 			<div className='grid grid-cols-2 gap-4'>
 				<Button onClick={() => setFormProgress(1)}>Previous</Button>
-				<Button variant={'outline'}>Create</Button>
+				<Button variant={'outline'} onClick={handleCreate}>
+					Create
+				</Button>
 			</div>
 		</div>
 	)

@@ -84,10 +84,6 @@ const SecondForm = ({
 		setOfferingCategory('')
 	}
 
-	useEffect(() => {
-		console.log(contentOfferingForm)
-	}, [contentOfferingForm])
-
 	return (
 		<motion.div
 			className='grid gap-4'
