@@ -27,13 +27,30 @@ export const SignupFormType = z
 	})
 
 export const OfferingFormType = z.object({
-	category: z.enum(['content-distribution', 'advertisement', '']),
+	category: z.enum(['content-distribution', 'advertisement', '']).optional(),
 	name: z.string(),
-	url: z.string(),
+	url: z.string().url(),
 	desc: z.string(),
 	email: z.string().email(),
 	telegram: z.string(),
 	gambling: z.boolean(),
 	adult: z.boolean(),
 	web3: z.boolean(),
+})
+
+export const ContentOfferingFormType = z.object({
+	category: z
+		.enum([
+			'press-release',
+			'sponsored',
+			'sponsored-with-aggregators',
+			'newsletter',
+			'social-media',
+			'review-article',
+			'',
+		])
+		.optional(),
+	price: z.number().positive(),
+	discountedPrice: z.number().positive().optional(),
+	features: z.string().array().optional(),
 })

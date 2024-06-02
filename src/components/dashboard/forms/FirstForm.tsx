@@ -6,22 +6,45 @@ import { OfferingFormType } from '@/lib/zod'
 import { z } from 'zod'
 import { Label } from '@/components/ui/label'
 import { motion } from 'framer-motion'
+import { useToast } from '@/components/ui/use-toast'
 
 const FirstForm = ({
 	offeringForm,
 	setOfferingForm,
-	setShowOfferingForm,
 	setFormProgress,
-	setShowContentOfferingForm,
+	category,
+	setCategory,
 }: {
 	offeringForm: z.infer<typeof OfferingFormType>
 	setOfferingForm: React.Dispatch<
 		React.SetStateAction<z.infer<typeof OfferingFormType>>
 	>
-	setShowOfferingForm: React.Dispatch<React.SetStateAction<boolean>>
 	setFormProgress: React.Dispatch<React.SetStateAction<0 | 1 | 2 | 3>>
-	setShowContentOfferingForm: React.Dispatch<React.SetStateAction<boolean>>
+	category: 'content-distribution' | 'advertisement' | ''
+	setCategory: React.Dispatch<
+		React.SetStateAction<'content-distribution' | 'advertisement' | ''>
+	>
 }) => {
+	const { toast } = useToast()
+
+	const handleNextButton = () => {
+		if (!OfferingFormType.safeParse(offeringForm).success) {
+			toast({
+				title: 'Error',
+				description: 'Please fill all the fields correctly.',
+				variant: 'destructive',
+			})
+
+			return
+		}
+
+		setFormProgress(1)
+		if (category) {
+			setOfferingForm({ ...offeringForm, category: category! })
+		}
+		setCategory('')
+	}
+
 	return (
 		<motion.div
 			className='grid gap-4'
@@ -96,7 +119,13 @@ const FirstForm = ({
 			<h2 className='text-xl font-medium'>Allowed Content</h2>
 			<div className='grid gap-2'>
 				<h3 className='font-medium'>Gambling</h3>
-				<RadioGroup defaultValue='false' className='flex gap-12'>
+				<RadioGroup
+					defaultValue='false'
+					className='flex gap-12'
+					onValueChange={(e) =>
+						setOfferingForm({ ...offeringForm, gambling: e === 'true' })
+					}
+				>
 					<div className='flex items-center space-x-2'>
 						<RadioGroupItem value='true' id='gambling-allowed' />
 						<Label htmlFor='gambling-allowed'>Yes</Label>
@@ -109,7 +138,13 @@ const FirstForm = ({
 			</div>
 			<div className='grid gap-2'>
 				<h3 className='font-medium'>Adult Content</h3>
-				<RadioGroup defaultValue='false' className='flex gap-12'>
+				<RadioGroup
+					defaultValue='false'
+					className='flex gap-12'
+					onValueChange={(e) =>
+						setOfferingForm({ ...offeringForm, adult: e === 'true' })
+					}
+				>
 					<div className='flex items-center space-x-2'>
 						<RadioGroupItem value='true' id='adult-content-allowed' />
 						<Label htmlFor='adult-content-allowed'>Yes</Label>
@@ -122,7 +157,13 @@ const FirstForm = ({
 			</div>
 			<div className='grid gap-2'>
 				<h3 className='font-medium'>Web3/Crypto Content</h3>
-				<RadioGroup defaultValue='false' className='flex gap-12'>
+				<RadioGroup
+					defaultValue='false'
+					className='flex gap-12'
+					onValueChange={(e) =>
+						setOfferingForm({ ...offeringForm, web3: e === 'true' })
+					}
+				>
 					<div className='flex items-center space-x-2'>
 						<RadioGroupItem value='true' id='crypto-allowed' />
 						<Label htmlFor='crypto-allowed'>Yes</Label>
@@ -133,15 +174,9 @@ const FirstForm = ({
 					</div>
 				</RadioGroup>
 			</div>
-			<Button
-				onClick={() => {
-					setFormProgress(1)
-					setShowOfferingForm(false)
-					setShowContentOfferingForm(true)
-				}}
-			>
-				Next
-			</Button>
+			<div className='my-4 grid grid-cols-2 gap-2'>
+				<Button onClick={handleNextButton}>Next</Button>
+			</div>
 		</motion.div>
 	)
 }

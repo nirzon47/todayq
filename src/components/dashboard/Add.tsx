@@ -10,19 +10,30 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import React, { useEffect, useState } from 'react'
-import { AnimatePresence, progress } from 'framer-motion'
+import React, { useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { z } from 'zod'
-import { OfferingFormType } from '@/lib/zod'
+import { ContentOfferingFormType, OfferingFormType } from '@/lib/zod'
 import FirstForm from './forms/FirstForm'
-import { Button } from '../ui/button'
+import SecondForm from './forms/SecondForm'
+import ReviewForm from './forms/ReviewForm'
 
 const Add = () => {
+	// Category States
 	const [category, setCategory] = useState<
 		'content-distribution' | 'advertisement' | ''
 	>('')
+	const [offeringCategory, setOfferingCategory] = useState<
+		| 'press-release'
+		| 'sponsored'
+		| 'sponsored-with-aggregators'
+		| 'newsletter'
+		| 'social-media'
+		| 'review-article'
+		| ''
+	>('')
 
-	// Offering Form State
+	// Form State
 	const [offeringForm, setOfferingForm] = useState<
 		z.infer<typeof OfferingFormType>
 	>({
@@ -36,56 +47,43 @@ const Add = () => {
 		adult: false,
 		web3: false,
 	})
-
-	// States to show forms
-	const [showOfferingForm, setShowOfferingForm] = useState<boolean>(false)
-	const [showContentOfferingForm, setShowContentOfferingForm] =
-		useState<boolean>(false)
+	const [contentOfferingForm, setContentOfferingForm] = useState<
+		z.infer<typeof ContentOfferingFormType>
+	>({
+		category: '',
+		price: 0,
+		discountedPrice: 0,
+		features: [],
+	})
 
 	// Form Progress State
 	const [formProgress, setFormProgress] = useState<0 | 1 | 2 | 3>(0)
 
-	const handleImport = () => {
-		const form = localStorage.getItem('form')
-		if (form) {
-			setOfferingForm(JSON.parse(form))
-			setFormProgress(1)
-		}
-	}
-
-	useEffect(() => {
-		const formSaveInterval = setInterval(() => {
-			localStorage.setItem('form', JSON.stringify(offeringForm))
-		}, 10000)
-
-		return () => {
-			clearInterval(formSaveInterval)
-		}
-	}, [offeringForm])
-
-	useEffect(() => {
-		if (category) {
-			setShowOfferingForm(true)
-			setOfferingForm({ ...offeringForm, category })
-		}
-	}, [category, offeringForm])
-
 	return (
 		<AnimatePresence>
-			<div className='grid grid-cols-1 gap-8 p-8 lg:grid-cols-8'>
+			<div className='grid grid-cols-1 gap-8 p-8 lg:h-[calc(100vh-64px)] lg:grid-cols-8 lg:overflow-hidden'>
 				<div className='lg:col-span-2'>
 					<AddSidebar progress={formProgress} />
 				</div>
-				<main className='lg:col-span-4'>
+				<main className='scrollbar-hide lg:col-span-4 lg:overflow-scroll'>
 					<Card>
 						<CardHeader>
-							<CardTitle>Add Offering</CardTitle>
+							<CardTitle>
+								{formProgress === 0
+									? 'Add Offering'
+									: formProgress === 1
+										? 'Add Content Offerings'
+										: 'Review'}
+							</CardTitle>
 						</CardHeader>
 						<CardContent className='grid gap-4'>
 							{formProgress === 0 && (
 								<div className='grid gap-2'>
 									<Label>Select Category</Label>
-									<Select onValueChange={setCategory as any}>
+									<Select
+										onValueChange={setCategory as any}
+										value={category === '' ? offeringForm.category : category}
+									>
 										<SelectTrigger>
 											<SelectValue placeholder='Select a category' />
 										</SelectTrigger>
@@ -100,33 +98,70 @@ const Add = () => {
 									</Select>
 								</div>
 							)}
-							{showOfferingForm && (
+							{formProgress === 0 && (offeringForm.category || category) && (
 								<FirstForm
 									key='first-form'
 									offeringForm={offeringForm}
 									setOfferingForm={setOfferingForm}
-									setShowOfferingForm={setShowOfferingForm}
 									setFormProgress={setFormProgress}
-									setShowContentOfferingForm={setShowContentOfferingForm}
+									category={category}
+									setCategory={setCategory}
 								/>
 							)}
-							{formProgress === 1 && <div>test</div>}
+							{formProgress === 1 && (
+								<div className='grid gap-2'>
+									<Label>Select Offering</Label>
+									<Select
+										onValueChange={setOfferingCategory as any}
+										value={
+											offeringCategory === ''
+												? contentOfferingForm.category
+												: offeringCategory
+										}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder='Select a category' />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value='press-release'>
+												Press Release
+											</SelectItem>
+											<SelectItem value='sponsored'>Sponsored</SelectItem>
+											<SelectItem value='sponsored-with-aggregators'>
+												Sponsored with Aggregators
+											</SelectItem>
+											<SelectItem value='newsletter'>Newsletter</SelectItem>
+											<SelectItem value='social-media'>Social Media</SelectItem>
+											<SelectItem value='review-article'>
+												Review Article
+											</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
+							)}
+							{formProgress === 1 &&
+								(contentOfferingForm.category || offeringCategory) && (
+									<SecondForm
+										key='second-form'
+										contentOfferingForm={contentOfferingForm}
+										setContentOfferingForm={setContentOfferingForm}
+										setFormProgress={setFormProgress}
+										offeringCategory={offeringCategory}
+										setOfferingCategory={setOfferingCategory}
+									/>
+								)}
+							{formProgress === 2 && (
+								<ReviewForm
+									key='review-form'
+									offeringForm={offeringForm}
+									contentOfferingForm={contentOfferingForm}
+									setFormProgress={setFormProgress}
+								/>
+							)}
 						</CardContent>
 					</Card>
 				</main>
-				<div className='lg:col-span-2'>
-					{offeringForm.category && (
-						<Card>
-							<CardHeader>
-								<CardTitle>Previous Form</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div>{offeringForm.category}</div>
-								<Button onClick={handleImport}>Import</Button>
-							</CardContent>
-						</Card>
-					)}
-				</div>
+				<div className='lg:col-span-2'></div>
 			</div>
 		</AnimatePresence>
 	)
