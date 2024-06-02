@@ -3,7 +3,7 @@ import { cartModel } from '@/models/cart.model'
 import { orderModel } from '@/models/orderHistory.model'
 import Razorpay from 'razorpay'
 
-export interface razorpayOrderType {
+interface razorpayOrderType {
 	id: string
 }
 
@@ -12,7 +12,7 @@ const rpInstance = new Razorpay({
 	key_secret: process.env.RAZORPAY_SECRET!,
 })
 
-export const razorpayPayment = async (total: number) => {
+const razorpayPayment = async (total: number) => {
 	const razorPayOptions = {
 		amount: total! * 100,
 		currency: 'INR',
