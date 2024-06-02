@@ -13,3 +13,18 @@ export const POST = async (req: Request) => {
 		{ status: 201 },
 	)
 }
+
+export const GET = async () => {
+	await connectDB()
+
+	const contents = await contentModel.find()
+
+	return Response.json(
+		{
+			success: true,
+			message: 'Contents fetched successfully',
+			contents,
+		},
+		{ status: 200 },
+	)
+}
