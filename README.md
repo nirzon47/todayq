@@ -44,6 +44,37 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+### Configure .env file
+
+Add the following lines to `.env` file:
+
+Github OAuth:
+https://github.com/settings/developers
+
+Google OAuth:
+https://console.developers.google.com/apis/credentials
+
+Razorpay:
+https://dashboard.razorpay.com/applications
+
+Uploadthing:
+https://uploadthing.com
+
+MONGODB_URI = <YOUR_MONGODB_URI/{DBNAME}>
+
+GITHUB_ID = <GITHUB_ID_FROM_GITHUB_OAUTH>
+GITHUB_SECRET = <GITHUB_SECRET_FROM_GITHUB_OAUTH>
+
+GOOGLE_ID = <GOOGLE_ID_FROM_GOOGLE_OAUTH>
+GOOGLE_SECRET = <GOOGLE_SECRET_FROM_GOOGLE_OAUTH>
+
+RAZORPAY_KEY_ID = <YOUR_RAZORPAY_KEY_ID>
+NEXT_PUBLIC_RAZORPAY_KEY_ID = <YOUR_RAZORPAY_KEY_ID_SAME_AS_ABOVE>
+RAZORPAY_SECRET=<YOUR_RAZORPAY_SECRET>
+
+UPLOADTHING_APP_ID=<YOUR_UPLOADTHING_APP_ID>
+UPLOADTHING_SECRET=<YOUR_UPLOADTHING_SECRET>
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
