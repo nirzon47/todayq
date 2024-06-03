@@ -48,18 +48,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 Add the following lines to `.env` file:
 
-Github OAuth:
-https://github.com/settings/developers
-
-Google OAuth:
-https://console.developers.google.com/apis/credentials
-
-Razorpay:
-https://dashboard.razorpay.com/applications
-
-Uploadthing:
-https://uploadthing.com
-
+```bash
 MONGODB_URI = <YOUR_MONGODB_URI/{DBNAME}>
 
 GITHUB_ID = <GITHUB_ID_FROM_GITHUB_OAUTH>
@@ -74,6 +63,19 @@ RAZORPAY_SECRET=<YOUR_RAZORPAY_SECRET>
 
 UPLOADTHING_APP_ID=<YOUR_UPLOADTHING_APP_ID>
 UPLOADTHING_SECRET=<YOUR_UPLOADTHING_SECRET>
+```
+
+Github OAuth:
+https://github.com/settings/developers
+
+Google OAuth:
+https://console.developers.google.com/apis/credentials
+
+Razorpay:
+https://dashboard.razorpay.com/applications
+
+Uploadthing:
+https://uploadthing.com
 
 ## Learn More
 
