@@ -1,14 +1,28 @@
 # Content Marketplace- TodayQ Assignment
 
+## [Hosted Link](https://todayq-assignment.vercel.app/)
+
+## [API Documentation](https://documenter.getpostman.com/view/20186883/2sA3Qwcq6T)
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) - React Framework
 - [TailwindCSS](https://tailwindcss.com/) - CSS Utility Library
 - [shadcn](https://ui.shadcn.com/) - UI Components
+- [Framer Motion](https://www.framer.com/motion/) - Animations
 - [next-auth](https://next-auth.js.org/) - Authentication
 - [Zod](https://github.com/colinhacks/zod) - Validation and Type Checking
 - [bcryptjs](https://github.com/kelektiv/node.bcrypt.js) - Password Hashing
 - [mongoose](https://mongoosejs.com/) - MongoDB ORM
+
+## Features
+
+- Authentication
+- Content Marketplace
+- Multipart form for adding content
+- Themes
+- Razorpay Integration
+- Server Side Rendering
 
 ## Getting Started
 
