@@ -49,8 +49,6 @@ const Dashboard = () => {
 			newActiveFilters = newActiveFilters.filter((f1) => f1 !== f)
 		}
 
-		console.log(newActiveFilters)
-
 		setActiveFilters(newActiveFilters)
 		const newData = data.filter((item) =>
 			newActiveFilters.includes(item.category),

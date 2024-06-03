@@ -4,6 +4,7 @@ import ProfileSection from './ProfileSection'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import ThemeToggle from '../ThemeToggle'
 
 const links = [
 	{
@@ -31,6 +32,7 @@ const Header = () => {
 					<SheetContent side={'left'}>
 						<div className='flex flex-col gap-4'>
 							<Links />
+							<ThemeToggle />
 						</div>
 					</SheetContent>
 				</Sheet>
@@ -41,6 +43,7 @@ const Header = () => {
 			</div>
 			<div className='hidden items-center gap-12 md:flex'>
 				<Links />
+				<ThemeToggle />
 			</div>
 			<ProfileSection />
 		</header>
