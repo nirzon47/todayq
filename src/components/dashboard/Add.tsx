@@ -66,7 +66,7 @@ const Add = () => {
 	>([] as any)
 
 	// Form Progress State
-	const [formProgress, setFormProgress] = useState<0 | 1 | 2 | 3>(1)
+	const [formProgress, setFormProgress] = useState<0 | 1 | 2 | 3>(0)
 
 	// Session
 	const { status } = useSession()
@@ -194,7 +194,7 @@ const Add = () => {
 									<ReviewForm
 										key='review-form'
 										offeringForm={offeringForm}
-										contentOfferingForm={contentOfferingForm}
+										allContentForms={allContentForms}
 										setFormProgress={setFormProgress}
 									/>
 								)}

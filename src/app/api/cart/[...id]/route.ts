@@ -1,7 +1,6 @@
 import connectDB from '@/lib/db'
 import { cartModel } from '@/models/cart.model'
 import { contentModel } from '@/models/content.model'
-import { Mongoose } from 'mongoose'
 
 // Add item to cart
 export const POST = async (

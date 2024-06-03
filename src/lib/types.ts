@@ -21,6 +21,7 @@ export interface ItemType {
 	createdAt: string
 	updatedAt: string
 	__v: number
+	image: string
 }
 
 interface ContentOffering {

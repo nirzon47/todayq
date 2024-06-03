@@ -13,7 +13,7 @@ import { LuChevronLeft, LuShoppingCart } from 'react-icons/lu'
 
 const ContentItemPage = ({ params }: { params: { id: string } }) => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [data, setData] = useState<ItemType>()
+	const [data, setData] = useState<any>()
 
 	const router = useRouter()
 	const { toast } = useToast()
@@ -38,7 +38,7 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 	}, [params, toast])
 
 	// Add to cart
-	const handleAddToCart = async () => {
+	const handleAddToCart = async (id: string) => {
 		try {
 			const { data } = await axios.post(`/api/cart/${params.id}`, {
 				// @ts-ignore
@@ -138,57 +138,60 @@ const ContentItemPage = ({ params }: { params: { id: string } }) => {
 						</Card>
 					</div>
 					<h2 className='my-6 px-4 text-xl font-semibold'>Content Offerings</h2>
-					<Card className='grid gap-4 p-6'>
-						<h3 className='mb-4 text-lg font-medium capitalize'>
-							{data.contentOffering[0].category.split('-').join(' ')}
-						</h3>
-						<div>
-							<h3 className='mb-2 text-lg font-medium'>Features</h3>
-							{data.contentOffering[0].features.map((feature) => (
-								<p key={feature} className='capitalize text-primary'>
-									{feature.split('-').join(' ')}
-								</p>
-							))}
-						</div>
-						<div className='flex justify-between'>
-							<p className='flex items-center gap-2'>
-								<span>Price:</span>
-								<span className='flex items-center gap-6'>
-									{data.contentOffering[0].price ===
-									data.contentOffering[0].discountedPrice ? (
-										<span className='font-bold text-primary'>
-											${data.contentOffering[0].price}
+					<div className='grid gap-2'>
+						{data.contentOffering.map((offering: any) => (
+							<Card className='grid gap-4 p-6' key={offering._id}>
+								<h3 className='mb-4 text-lg font-medium capitalize'>
+									{offering.category.split('-').join(' ')}
+								</h3>
+								<div>
+									<h3 className='mb-2 text-lg font-medium'>Features</h3>
+									{offering.features.map((feature: any) => (
+										<p key={feature} className='capitalize text-primary'>
+											{feature.split('-').join(' ')}
+										</p>
+									))}
+								</div>
+								<div className='flex justify-between'>
+									<p className='flex items-center gap-2'>
+										<span>Price:</span>
+										<span className='flex items-center gap-6'>
+											{offering.price === offering.discountedPrice ? (
+												<span className='font-bold text-primary'>
+													${offering.price}
+												</span>
+											) : (
+												<>
+													<span className='line-through'>
+														${offering.price}
+													</span>
+													<span className='font-bold text-primary'>
+														${offering.discountedPrice}
+													</span>
+												</>
+											)}
 										</span>
+									</p>
+									{status === 'authenticated' ? (
+										<Button
+											className='flex items-center gap-2'
+											onClick={() => handleAddToCart(offering._id)}
+										>
+											<LuShoppingCart />
+											<span>Add to cart</span>
+										</Button>
 									) : (
-										<>
-											<span className='line-through'>
-												${data.contentOffering[0].price}
-											</span>
-											<span className='font-bold text-primary'>
-												${data.contentOffering[0].discountedPrice}
-											</span>
-										</>
+										<Button
+											onClick={() => router.push('/auth/signin')}
+											variant='outline'
+										>
+											Sign in to add to cart
+										</Button>
 									)}
-								</span>
-							</p>
-							{status === 'authenticated' ? (
-								<Button
-									className='flex items-center gap-2'
-									onClick={handleAddToCart}
-								>
-									<LuShoppingCart />
-									<span>Add to cart</span>
-								</Button>
-							) : (
-								<Button
-									onClick={() => router.push('/auth/signin')}
-									variant='outline'
-								>
-									Sign in to add to cart
-								</Button>
-							)}
-						</div>
-					</Card>
+								</div>
+							</Card>
+						))}
+					</div>
 				</div>
 			)}
 		</div>

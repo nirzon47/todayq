@@ -7,11 +7,11 @@ import { useRouter } from 'next/navigation'
 
 const ReviewForm = ({
 	offeringForm,
-	contentOfferingForm,
+	allContentForms,
 	setFormProgress,
 }: {
 	offeringForm: z.infer<typeof OfferingFormType>
-	contentOfferingForm: z.infer<typeof ContentOfferingFormType>
+	allContentForms: [z.infer<typeof ContentOfferingFormType>]
 	setFormProgress: React.Dispatch<React.SetStateAction<0 | 1 | 2 | 3>>
 }) => {
 	const { toast } = useToast()
@@ -21,7 +21,7 @@ const ReviewForm = ({
 		try {
 			const { data } = await axios.post('/api/content', {
 				...offeringForm,
-				contentOffering: contentOfferingForm,
+				contentOffering: allContentForms,
 			})
 
 			toast({
@@ -92,36 +92,34 @@ const ReviewForm = ({
 				</h2>
 			</div>
 
-			<div className='grid gap-4'>
-				<div className='grid gap-2'>
-					<p className='font-semibold'>Category</p>
-					<p className='capitalize text-primary'>
-						{contentOfferingForm.category}
-					</p>
-				</div>
-				<div className='grid grid-cols-2 gap-4'>
+			{allContentForms.map((contentForm, index) => (
+				<div className='grid gap-4' key={index}>
 					<div className='grid gap-2'>
-						<p className='font-semibold'>Price</p>
-						<p className='text-primary'>{contentOfferingForm.price}</p>
+						<p className='font-semibold'>Category</p>
+						<p className='capitalize text-primary'>{contentForm.category}</p>
+					</div>
+					<div className='grid grid-cols-2 gap-4'>
+						<div className='grid gap-2'>
+							<p className='font-semibold'>Price</p>
+							<p className='text-primary'>{contentForm.price}</p>
+						</div>
+						<div className='grid gap-2'>
+							<p className='font-semibold'>Discounted Price</p>
+							<p className='text-primary'>{contentForm.discountedPrice}</p>
+						</div>
 					</div>
 					<div className='grid gap-2'>
-						<p className='font-semibold'>Discounted Price</p>
-						<p className='text-primary'>
-							{contentOfferingForm.discountedPrice}
-						</p>
+						<p className='font-semibold'>Features</p>
+						<div className='text-primary'>
+							{contentForm.features?.map((f) => (
+								<p key={f} className='capitalize'>
+									{f.split('-').join(' ')}
+								</p>
+							))}
+						</div>
 					</div>
 				</div>
-				<div className='grid gap-2'>
-					<p className='font-semibold'>Features</p>
-					<div className='text-primary'>
-						{contentOfferingForm.features?.map((f) => (
-							<p key={f} className='capitalize'>
-								{f.split('-').join(' ')}
-							</p>
-						))}
-					</div>
-				</div>
-			</div>
+			))}
 
 			<div className='grid grid-cols-2 gap-4'>
 				<Button onClick={() => setFormProgress(1)}>Previous</Button>

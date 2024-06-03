@@ -79,10 +79,13 @@ const SecondForm = ({
 
 		setFormProgress(2)
 		if (offeringCategory) {
-			setContentOfferingForm({
+			const newArray = allContentForms
+			newArray.push({
 				...contentOfferingForm,
 				category: offeringCategory!,
 			})
+
+			setAllContentForms(newArray)
 		}
 		setOfferingCategory('')
 	}
@@ -98,14 +101,15 @@ const SecondForm = ({
 			return
 		}
 
-		const newArray = allContentForms
-		newArray.push({
-			...contentOfferingForm,
-			category: offeringCategory!,
-		})
+		if (offeringCategory) {
+			const newArray = allContentForms
+			newArray.push({
+				...contentOfferingForm,
+				category: offeringCategory!,
+			})
 
-		setAllContentForms(newArray)
-
+			setAllContentForms(newArray)
+		}
 		setContentOfferingForm({
 			category: '',
 			price: 0,
