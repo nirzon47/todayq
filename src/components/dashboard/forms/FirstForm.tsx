@@ -7,6 +7,8 @@ import { z } from 'zod'
 import { Label } from '@/components/ui/label'
 import { motion } from 'framer-motion'
 import { useToast } from '@/components/ui/use-toast'
+import { UploadButton } from '@/lib/uploadthing'
+import Image from 'next/image'
 
 const FirstForm = ({
 	offeringForm,
@@ -87,6 +89,38 @@ const FirstForm = ({
 					onChange={(e) =>
 						setOfferingForm({ ...offeringForm, desc: e.target.value })
 					}
+				/>
+			</div>
+			<div className='grid gap-2'>
+				<Label>Company Logo</Label>
+				{offeringForm.image && (
+					<Image
+						src={offeringForm.image}
+						alt='Company Logo'
+						width={200}
+						height={200}
+						quality={100}
+						className='mx-auto my-2 aspect-square w-32 object-cover'
+					/>
+				)}
+				<UploadButton
+					endpoint='imageUploader'
+					onClientUploadComplete={(res) => {
+						setOfferingForm({
+							...offeringForm,
+							image: res[0].url,
+						})
+
+						toast({
+							title: 'Success',
+							description: 'Image uploaded successfully.',
+						})
+					}}
+					onUploadError={(error: Error) => {
+						toast({
+							title: 'Error',
+						})
+					}}
 				/>
 			</div>
 			<div className='grid grid-cols-2 gap-4'>
@@ -173,6 +207,40 @@ const FirstForm = ({
 						<Label htmlFor='crypto-not-allowed'>No</Label>
 					</div>
 				</RadioGroup>
+			</div>
+			<div className='grid grid-cols-2 gap-4'>
+				<div className='grid gap-2'>
+					<Label htmlFor='languages' className='truncate'>
+						Languages (space separated)
+					</Label>
+					<Input
+						id='languages'
+						placeholder='english hindi'
+						value={offeringForm.languages}
+						onChange={(e) =>
+							setOfferingForm({
+								...offeringForm,
+								languages: e.target.value.split(' '),
+							})
+						}
+					/>
+				</div>
+				<div className='grid gap-2'>
+					<Label htmlFor='languages' className='truncate'>
+						Regions (space separated)
+					</Label>
+					<Input
+						id='languages'
+						placeholder='global'
+						value={offeringForm.region}
+						onChange={(e) =>
+							setOfferingForm({
+								...offeringForm,
+								region: e.target.value.split(' '),
+							})
+						}
+					/>
+				</div>
 			</div>
 			<div className='my-4 grid grid-cols-2 gap-2'>
 				<Button onClick={handleNextButton}>Next</Button>

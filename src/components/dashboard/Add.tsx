@@ -48,6 +48,9 @@ const Add = () => {
 		gambling: false,
 		adult: false,
 		web3: false,
+		image: '',
+		languages: [],
+		region: [],
 	})
 	const [contentOfferingForm, setContentOfferingForm] = useState<
 		z.infer<typeof ContentOfferingFormType>
@@ -58,8 +61,12 @@ const Add = () => {
 		features: [],
 	})
 
+	const [allContentForms, setAllContentForms] = useState<
+		[z.infer<typeof ContentOfferingFormType>]
+	>([] as any)
+
 	// Form Progress State
-	const [formProgress, setFormProgress] = useState<0 | 1 | 2 | 3>(0)
+	const [formProgress, setFormProgress] = useState<0 | 1 | 2 | 3>(1)
 
 	// Session
 	const { status } = useSession()
@@ -123,6 +130,22 @@ const Add = () => {
 								)}
 								{formProgress === 1 && (
 									<div className='grid gap-2'>
+										{allContentForms.length > 0 && (
+											<Card className='mb-4'>
+												<CardHeader>
+													<CardTitle>Content Offerings Added</CardTitle>
+												</CardHeader>
+												{allContentForms.map((form, index) => (
+													<CardContent
+														key={index}
+														className='capitalize text-primary'
+													>
+														{form.category?.split('-').join(' ')} - $
+														{form.price}
+													</CardContent>
+												))}
+											</Card>
+										)}
 										<Label>Select Offering</Label>
 										<Select
 											onValueChange={setOfferingCategory as any}
@@ -163,6 +186,8 @@ const Add = () => {
 											setFormProgress={setFormProgress}
 											offeringCategory={offeringCategory}
 											setOfferingCategory={setOfferingCategory}
+											allContentForms={allContentForms}
+											setAllContentForms={setAllContentForms}
 										/>
 									)}
 								{formProgress === 2 && (

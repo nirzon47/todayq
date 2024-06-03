@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import { withUt } from 'uploadthing/tw'
 
 const {
 	default: flattenColorPalette,
@@ -101,4 +102,4 @@ const config = {
 	plugins: [require('tailwindcss-animate'), addVariablesForColors],
 } satisfies Config
 
-export default config
+export default withUt(config)

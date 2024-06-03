@@ -1,6 +1,4 @@
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Button } from '@/components/ui/button'
 import { ContentOfferingFormType } from '@/lib/zod'
 import { z } from 'zod'
@@ -8,7 +6,6 @@ import { Label } from '@/components/ui/label'
 import { motion } from 'framer-motion'
 import { useToast } from '@/components/ui/use-toast'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useEffect } from 'react'
 
 const checkboxes = [
 	{
@@ -35,6 +32,8 @@ const SecondForm = ({
 	setFormProgress,
 	offeringCategory,
 	setOfferingCategory,
+	allContentForms,
+	setAllContentForms,
 }: {
 	contentOfferingForm: z.infer<typeof ContentOfferingFormType>
 	setContentOfferingForm: React.Dispatch<
@@ -60,6 +59,10 @@ const SecondForm = ({
 			| ''
 		>
 	>
+	allContentForms: [z.infer<typeof ContentOfferingFormType>]
+	setAllContentForms: React.Dispatch<
+		React.SetStateAction<[z.infer<typeof ContentOfferingFormType>]>
+	>
 }) => {
 	const { toast } = useToast()
 
@@ -81,6 +84,34 @@ const SecondForm = ({
 				category: offeringCategory!,
 			})
 		}
+		setOfferingCategory('')
+	}
+
+	const handleAddMore = () => {
+		if (!ContentOfferingFormType.safeParse(contentOfferingForm).success) {
+			toast({
+				title: 'Error',
+				description: 'Please fill all the fields correctly.',
+				variant: 'destructive',
+			})
+
+			return
+		}
+
+		const newArray = allContentForms
+		newArray.push({
+			...contentOfferingForm,
+			category: offeringCategory!,
+		})
+
+		setAllContentForms(newArray)
+
+		setContentOfferingForm({
+			category: '',
+			price: 0,
+			discountedPrice: 0,
+			features: [],
+		})
 		setOfferingCategory('')
 	}
 
@@ -163,6 +194,20 @@ const SecondForm = ({
 					))}
 				</div>
 			</div>
+			<div className='grid grid-cols-3 gap-4'>
+				<Button
+					variant={'outline'}
+					className='col-start-3'
+					onClick={handleAddMore}
+				>
+					Add more offerings +
+				</Button>
+			</div>
+			<div className='h-px bg-secondary'></div>
+
+			<p className='text-xs text-zinc-500'>
+				If this is the last content, click next
+			</p>
 
 			<div className='my-4 grid grid-cols-2 gap-2'>
 				<Button onClick={() => setFormProgress(0)}>Previous</Button>

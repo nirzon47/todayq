@@ -36,6 +36,9 @@ export const OfferingFormType = z.object({
 	gambling: z.boolean(),
 	adult: z.boolean(),
 	web3: z.boolean(),
+	image: z.string(),
+	languages: z.string().array().optional(),
+	region: z.string().array().optional(),
 })
 
 export const ContentOfferingFormType = z.object({

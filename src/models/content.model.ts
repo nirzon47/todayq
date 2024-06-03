@@ -39,6 +39,15 @@ const contentSchema = new Schema(
 			type: Boolean,
 			required: true,
 		},
+		image: {
+			type: String,
+		},
+		languages: {
+			type: [String],
+		},
+		region: {
+			type: [String],
+		},
 		contentOffering: [
 			{
 				category: {
