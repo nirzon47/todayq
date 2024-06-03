@@ -47,7 +47,7 @@ const OrderHistory = () => {
 
 	return (
 		<>
-			{status === 'loading' && (
+			{(loading || status === 'loading') && (
 				<div className='flex h-96 justify-center'>
 					<Image src='/loader.svg' alt='loader' width={30} height={30} />
 				</div>
