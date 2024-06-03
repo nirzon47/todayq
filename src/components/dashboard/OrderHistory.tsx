@@ -53,7 +53,7 @@ const OrderHistory = () => {
 				</div>
 			)}
 
-			{(status === 'authenticated' || status !== 'loading') && (
+			{(status === 'authenticated' || status !== 'loading') && !loading && (
 				<>
 					<h1 className='mx-auto mb-8 max-w-3xl text-3xl font-bold'>
 						Order History
